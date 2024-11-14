@@ -1,0 +1,41 @@
+1. Create a 2 new users with the username user1 and user2
+sudo useradd user1
+sudo useradd user2
+
+2. Verify the new user creation 
+sudo cat /etc/passwd
+
+3.create a group called g220
+sudo groupadd g220
+
+4.Add  user1 to the g220 group
+sudo usermod -aG g220 user1
+
+5.Verify that user1 has been added to the group
+sudo cat /etc/group | grep g220
+
+6.Create a test directory
+mkdir test
+
+7. Inside the test dir Create two files file1.txt file2.txt
+touch file1.txt file2.txt
+
+8.Change the permissions for file1.txt so that:
+- Owner has read and write permissions
+- Group has read-only permission
+- Others have no permissions
+sudo usermod 640 file1.txt 
+
+
+9. Change the permissions for file2.txt to:
+- Everyone has full read, write, and execute permissions
+sudo usermod 777 file2.txt 
+
+10. Check the owner of file1.txt:
+ls -l
+
+11.Change the owner of file1.txt to user1
+sudo chown useer1 file1.txt
+
+12. Change the group of file2.txt to g220
+sudo usermod -aG g220 user2
