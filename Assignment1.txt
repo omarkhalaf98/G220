@@ -1,0 +1,76 @@
+Q1:Create a 2 new users with the username user1 and user2
+noha99@lenovo:~$ sudo useradd user1
+[sudo] password for noha99: 
+noha99@lenovo:~$ sudo useradd user2
+
+Q2:Verify the new user creation 
+noha99@lenovo:~$ cat /etc/passwd |  grep user1
+user1:x:1001:1001::/home/user1:/bin/sh
+noha99@lenovo:~$ cat /etc/passwd |  grep user2
+user2:x:1002:1002::/home/user2:/bin/sh
+
+Q3:create a group called g220
+noha99@lenovo:~$ addgroup g220
+fatal: Only root may add a user or group to the system.
+noha99@lenovo:~$ sudo addgroup g220
+info: Selecting GID from range 1000 to 59999 ...
+info: Adding group `g220' (GID 1003) ...
+
+Q4:Add  user1 to the g220 group
+noha99@lenovo:~$ sudo usermod -aG g220 user1
+
+Q5:Verify that user1 has been added to the group
+noha99@lenovo:~$ cat /etc/group |  grep user1
+user1:x:1001:
+g220:x:1003:user1
+
+Q6:Create a test directory
+noha99@lenovo:~$ mkdir test
+
+Q7:Inside the test dir Create two files file1.txt file2.txt
+noha99@lenovo:~$ cd test/
+noha99@lenovo:~/test$ touch file1
+noha99@lenovo:~/test$ touch file2
+noha99@lenovo:~/test$ ls
+file1  file2
+
+Q8:Change the permissions for file1.txt so that:
+- Owner has read and write permissions
+- Group has read-only permission
+- Others have no permissions
+noha99@lenovo:~/test$ sudo chmod 640 file1
+
+Q9:9. Change the permissions for file2.txt to:
+- Everyone has full read, write, and execute permissions
+noha99@lenovo:~/test$ sudo chmod 777 file2
+
+Q10:Check the owner of file1.txt
+noha99@lenovo:~/test$ ls -la
+total 8
+drwxrwxr-x  2 noha99 noha99 4096 Nov 16 16:19 .
+drwxr-x--- 15 noha99 noha99 4096 Nov 16 16:18 ..
+-rw-r-----  1 noha99 noha99    0 Nov 16 16:19 file1
+-rwxrwxrwx  1 noha99 noha99    0 Nov 16 16:19 file2
+
+Q11:Change the owner of file1.txt to user1
+noha99@lenovo:~/test$ chown user1 file1
+chown: changing ownership of 'file1': Operation not permitted
+noha99@lenovo:~/test$ sudo chown user1 file1
+noha99@lenovo:~/test$ la
+file1  file2
+noha99@lenovo:~/test$ ls -la
+total 8
+drwxrwxr-x  2 noha99 noha99 4096 Nov 16 16:19 .
+drwxr-x--- 15 noha99 noha99 4096 Nov 16 16:18 ..
+-rw-r-----  1 user1  noha99    0 Nov 16 16:19 file1
+-rwxrwxrwx  1 noha99 noha99    0 Nov 16 16:19 file2
+
+Q12:Change the group of file2.txt to g220
+noha99@lenovo:~/test$ sudo chgrp g220 file2
+noha99@lenovo:~/test$ ls -la
+total 8
+drwxrwxr-x  2 noha99 noha99 4096 Nov 16 16:19 .
+drwxr-x--- 15 noha99 noha99 4096 Nov 16 16:18 ..
+-rw-r-----  1 user1  noha99    0 Nov 16 16:19 file1
+-rwxrwxrwx  1 noha99 g220      0 Nov 16 16:19 file2
+
